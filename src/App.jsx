@@ -1,178 +1,194 @@
 import React, { useState } from 'react';
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0f172a; color: #f8fafc; overflow-x: hidden; }
+  * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  body { background: #000; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
-  /* CENTER ALIGNMENT WRAPPER */
-  .page-container {
-    display: grid; place-items: center; align-content: center;
-    min-height: 100vh; width: 100vw; text-align: center; padding: 40px 20px;
+  /* --- GLOBAL CENTER ALIGNMENT UTILITY --- */
+  .center-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Horizontal Center */
+    justify-content: center; /* Vertical Center */
+    text-align: center;
+    min-height: 100vh;
+    width: 100vw;
+    padding: 0 20px;
   }
 
-  /* HERO STYLES */
-  .hero-h1 { font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-  .hero-h1 span { background: linear-gradient(to right, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero-p { font-size: 1.2rem; color: #94a3b8; max-width: 700px; margin-bottom: 40px; line-height: 1.6; }
-
-  /* CARDS & GRID */
-  .grid-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; width: 100%; max-width: 1100px; margin-top: 40px; }
-  .glass-card {
-    background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 40px;
-    cursor: pointer; transition: 0.4s;
+  /* --- LANDING & PROTOCOL TEXT --- */
+  .hero-title { 
+    font-size: clamp(3rem, 8vw, 5rem); 
+    font-weight: 800; 
+    letter-spacing: -3px; 
+    line-height: 1.1;
+    margin-bottom: 20px;
   }
-  .glass-card:hover { border-color: #6366f1; transform: translateY(-10px); background: rgba(255,255,255,0.06); }
-
-  /* TEMPLATE GRID */
-  .temp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; width: 100%; max-width: 1200px; }
-  .temp-item { background: #fff; padding: 10px; border-radius: 12px; cursor: pointer; position: relative; color: #333; }
-  .temp-item:hover { transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-
-  /* BUTTONS */
-  .btn-god { background: #6366f1; color: white; padding: 18px 50px; border-radius: 100px; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); }
-
-  /* EDITOR LAYOUT (ZETY) */
-  .editor-shell { display: flex; height: 100vh; width: 100vw; text-align: left; background: #0f172a; }
-  .side-steps { width: 80px; background: #020617; border-right: 1px solid #1e293b; display: flex; flex-direction: column; align-items: center; padding-top: 30px; gap: 35px; }
-  .step-icon { color: #475569; font-size: 0.7rem; font-weight: 800; }
-  .step-icon.active { color: #6366f1; }
-
-  .form-container { width: 480px; padding: 40px; overflow-y: auto; background: #0f172a; border-right: 1px solid #1e293b; }
-  .preview-container { flex: 1; background: #334155; display: flex; justify-content: center; padding: 40px; overflow-y: auto; }
-
-  .resume-paper { width: 210mm; min-height: 297mm; background: white; color: #1e293b; padding: 60px; box-shadow: 0 40px 100px rgba(0,0,0,0.5); transform: scale(0.85); transform-origin: top center; }
+  .hero-title span { color: #4f46e5; }
   
-  .input-ui { margin-bottom: 20px; }
-  .input-ui label { display: block; color: #64748b; font-size: 0.7rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
-  .input-ui input, .input-ui textarea { width: 100%; padding: 12px; background: #1e293b; border: 1px solid #334155; color: white; border-radius: 8px; outline: none; }
+  .description { 
+    font-size: 1.2rem; 
+    color: #888; 
+    max-width: 700px; 
+    margin-bottom: 40px; 
+    line-height: 1.6;
+  }
+
+  /* --- PROTOCOL CARDS CENTERED GRID --- */
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .protocol-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 45px 30px;
+    border-radius: 24px;
+    cursor: pointer;
+  }
+  .protocol-card:hover {
+    background: rgba(79, 70, 229, 0.1);
+    border-color: #4f46e5;
+    transform: translateY(-10px);
+  }
+
+  /* --- EDITOR VIEW (CENTERED PREVIEW) --- */
+  .editor-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 0;
+    background: #000;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 600px; /* Form ko center mein narrow rakha hai */
+    margin-bottom: 80px;
+    text-align: left; /* Input labels readable rakhne ke liye left align */
+  }
+
+  /* --- RESUME PAPER (PERFECT CENTER) --- */
+  .resume-paper {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    padding: 60px;
+    box-shadow: 0 50px 100px rgba(79, 70, 229, 0.2);
+    color: #000;
+    transform: scale(0.9);
+    margin-bottom: 100px;
+  }
+
+  /* --- BUTTONS --- */
+  .btn-main {
+    background: #4f46e5;
+    color: #fff;
+    padding: 20px 50px;
+    border-radius: 50px;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+  }
+  .btn-main:hover { transform: scale(1.05) translateY(-2px); }
+
+  /* --- INPUTS --- */
+  .input-box {
+    width: 100%;
+    background: #111;
+    border: 1px solid #222;
+    padding: 18px;
+    border-radius: 12px;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    font-size: 1rem;
+  }
+
+  .anim-reveal { animation: reveal 1s ease-out both; }
+  @keyframes reveal { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 `;
 
-export default function App() {
-  const [step, setStep] = useState(1);
+export default function GlobalCenterApp() {
+  const [view, setView] = useState('landing');
   const [data, setData] = useState({
     name: 'KIRAN CHARHATE',
-    email: 'kirancharhate781@gmail.com',
-    phone: '+91 98765 43210',
-    location: 'Mumbai, India',
-    summary: 'Building high-performance user interfaces with cutting-edge technology.',
-    jobTitle: 'Senior Software Engineer',
-    company: 'Velocity AI',
-    degree: 'Bachelor of Technology',
-    school: 'University of Mumbai'
+    role: 'Lead UI/UX Architect',
+    summary: 'Building high-performance digital ecosystems with a focus on intuitive user flow and elite design systems.',
   });
 
-  const handleChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
+  if (view === 'landing') {
+    return (
+      <div className="center-layout">
+        <style>{styles}</style>
+        <div className="anim-reveal">
+          <h1 className="hero-title">Master Your <span>Future.</span></h1>
+          <p className="description">
+            Experience the next generation of professional identity. 
+            Designed for those who lead, not those who follow.
+          </p>
+          <button className="btn-main" onClick={() => setView('protocol')}>Enter Protocol</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (view === 'protocol') {
+    return (
+      <div className="center-layout">
+        <style>{styles}</style>
+        <h1 className="hero-title anim-reveal">Select <span>Protocol</span></h1>
+        <div className="protocol-grid anim-reveal" style={{animationDelay: '0.2s'}}>
+          {['Rising Star', 'Architect', 'Legacy Builder'].map((p) => (
+            <div key={p} className="protocol-card" onClick={() => setView('editor')}>
+              <h3 style={{fontSize: '1.5rem', marginBottom: 10}}>{p}</h3>
+              <p style={{color: '#666', fontSize: '0.85rem'}}>AI-Optimized system for professional excellence.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="editor-wrapper">
       <style>{styles}</style>
+      
+      <div className="form-container anim-reveal">
+        <h2 style={{textAlign: 'center', fontSize: '2.5rem', marginBottom: 40}}>Edit <span>Identity</span></h2>
+        
+        <label style={{color: '#4f46e5', fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2}}>FULL NAME</label>
+        <input className="input-box" value={data.name} onChange={(e) => setData({...data, name: e.target.value})} />
+        
+        <label style={{color: '#4f46e5', fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2}}>PROFESSIONAL ROLE</label>
+        <input className="input-box" value={data.role} onChange={(e) => setData({...data, role: e.target.value})} />
+        
+        <label style={{color: '#4f46e5', fontWeight: 800, fontSize: '0.75rem', letterSpacing: 2}}>SUMMARY</label>
+        <textarea className="input-box" rows="4" value={data.summary} onChange={(e) => setData({...data, summary: e.target.value})} />
+        
+        <button className="btn-main" style={{width: '100%'}} onClick={() => window.print()}>Generate Official PDF</button>
+      </div>
 
-      {/* STEP 1: HERO */}
-      {step === 1 && (
-        <div className="page-container">
-          <h1 className="hero-h1">Create Your <span>Future</span><br/>In Seconds.</h1>
-          <p className="hero-p">The most advanced AI resume builder. No more alignment issues, just pure performance.</p>
-          <button className="btn-god" onClick={() => setStep(2)}>Get Started — It's Free</button>
+      <h2 className="anim-reveal" style={{marginBottom: 40, fontSize: '2rem'}}>Live <span>Preview</span></h2>
+      <div className="resume-paper anim-reveal">
+        <div style={{textAlign: 'center', borderBottom: '1px solid #eee', paddingBottom: 40}}>
+           <h1 style={{fontSize: '3.5rem', fontWeight: 900}}>{data.name}</h1>
+           <p style={{fontSize: '1.2rem', color: '#4f46e5', fontWeight: 700, textTransform: 'uppercase'}}>{data.role}</p>
         </div>
-      )}
-
-      {/* STEP 2: EXPERIENCE */}
-      {step === 2 && (
-        <div className="page-container">
-          <h2 style={{fontSize:'3rem'}}>Experience Level</h2>
-          <div className="grid-box">
-            {['Student', 'Professional', 'Executive'].map(l => (
-              <div key={l} className="glass-card" onClick={() => setStep(3)}>
-                <div style={{fontSize:'3rem', marginBottom:'10px'}}>💼</div>
-                <h3 style={{fontSize:'1.5rem'}}>{l}</h3>
-              </div>
-            ))}
-          </div>
+        <div style={{marginTop: 50}}>
+           <h4 style={{letterSpacing: 3, color: '#999', fontSize: '0.7rem', marginBottom: 20}}>EXECUTIVE SUMMARY</h4>
+           <p style={{lineHeight: 1.8, fontSize: '1.1rem'}}>{data.summary}</p>
         </div>
-      )}
-
-      {/* STEP 3: TEMPLATES */}
-      {step === 3 && (
-        <div className="page-container">
-          <h2 style={{fontSize:'3rem', marginBottom:'40px'}}>Select <span>Template</span></h2>
-          <div className="temp-grid">
-            {[1,2,3,4,5,6].map(i => (
-              <div key={i} className="temp-item" onClick={() => setStep(4)}>
-                <div style={{height:'280px', background:'#f8fafc', borderRadius:'8px', border:'1px solid #eee'}}></div>
-                <p style={{marginTop:'10px', fontWeight:800}}>Velocity Pro V.{i}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* STEP 4: EDITOR (WITH ALL CONTENT) */}
-      {step === 4 && (
-        <div className="editor-shell">
-          <div className="side-steps">
-            <div className="step-icon active">INFO</div>
-            <div className="step-icon">WORK</div>
-            <div className="step-icon">EDU</div>
-            <div className="step-icon">SKILLS</div>
-          </div>
-
-          <div className="form-container">
-            <h2 style={{marginBottom:'25px'}}>Personal Details</h2>
-            <div className="input-ui">
-              <label>Full Name</label>
-              <input name="name" value={data.name} onChange={handleChange} />
-            </div>
-            <div className="input-ui">
-              <label>Email Address</label>
-              <input name="email" value={data.email} onChange={handleChange} />
-            </div>
-            <div style={{display:'flex', gap:'15px'}}>
-               <div className="input-ui" style={{flex:1}}><label>Phone</label><input name="phone" value={data.phone} onChange={handleChange} /></div>
-               <div className="input-ui" style={{flex:1}}><label>Location</label><input name="location" value={data.location} onChange={handleChange} /></div>
-            </div>
-            <div className="input-ui">
-              <label>Professional Summary</label>
-              <textarea name="summary" rows="5" value={data.summary} onChange={handleChange}></textarea>
-            </div>
-            <h2 style={{margin:'30px 0 20px'}}>Experience</h2>
-            <div className="input-ui">
-              <label>Job Title</label>
-              <input name="jobTitle" value={data.jobTitle} onChange={handleChange} />
-            </div>
-            <div className="input-ui">
-              <label>Company</label>
-              <input name="company" value={data.company} onChange={handleChange} />
-            </div>
-
-            <button className="btn-god" style={{width:'100%', padding:'15px', marginTop:'20px'}} onClick={() => window.print()}>Download PDF</button>
-            <button onClick={() => setStep(1)} style={{background:'none', border:'none', color:'#64748b', marginTop:'20px', cursor:'pointer', width:'100%'}}>Back to Home</button>
-          </div>
-
-          <div className="preview-container">
-            <div className="resume-paper">
-              <h1 style={{fontSize:'3.2rem', fontWeight:800}}>{data.name}</h1>
-              <div style={{color:'#6366f1', fontSize:'1rem', borderBottom:'2px solid #6366f1', paddingBottom:'10px', marginBottom:'25px'}}>
-                {data.email} | {data.phone} | {data.location}
-              </div>
-
-              <h3 style={{color:'#6366f1', textTransform:'uppercase', fontSize:'1rem', marginBottom:'10px'}}>Summary</h3>
-              <p style={{lineHeight:1.6, color:'#475569'}}>{data.summary}</p>
-
-              <h3 style={{color:'#6366f1', textTransform:'uppercase', fontSize:'1rem', marginTop:'30px', marginBottom:'10px'}}>Work Experience</h3>
-              <div style={{fontWeight:800, fontSize:'1.1rem'}}>{data.jobTitle}</div>
-              <div style={{color:'#64748b', marginBottom:'10px'}}>{data.company}</div>
-              <p style={{color:'#475569'}}>Responsible for leading high-end projects and delivering optimized results.</p>
-
-              <h3 style={{color:'#6366f1', textTransform:'uppercase', fontSize:'1rem', marginTop:'30px', marginBottom:'10px'}}>Education</h3>
-              <div style={{fontWeight:800}}>{data.school}</div>
-              <div style={{color:'#475569'}}>{data.degree}</div>
-            </div>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

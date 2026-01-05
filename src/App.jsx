@@ -6,7 +6,6 @@ const styles = `
   * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
   body { background: #000; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
-  /* --- GLOBAL CENTER ALIGNMENT UTILITY --- */
   .center-layout {
     display: flex;
     flex-direction: column;
@@ -18,7 +17,6 @@ const styles = `
     padding: 0 20px;
   }
 
-  /* --- LANDING & PROTOCOL TEXT --- */
   .hero-title { 
     font-size: clamp(3rem, 8vw, 5rem); 
     font-weight: 800; 
@@ -36,7 +34,6 @@ const styles = `
     line-height: 1.6;
   }
 
-  /* --- PROTOCOL CARDS CENTERED GRID --- */
   .protocol-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -59,7 +56,6 @@ const styles = `
     transform: translateY(-10px);
   }
 
-  /* --- EDITOR VIEW (CENTERED PREVIEW) --- */
   .editor-wrapper {
     display: flex;
     flex-direction: column;
@@ -75,7 +71,6 @@ const styles = `
     text-align: left; /* Input labels readable rakhne ke liye left align */
   }
 
-  /* --- RESUME PAPER (PERFECT CENTER) --- */
   .resume-paper {
     width: 210mm;
     min-height: 297mm;
@@ -87,7 +82,6 @@ const styles = `
     margin-bottom: 100px;
   }
 
-  /* --- BUTTONS --- */
   .btn-main {
     background: #4f46e5;
     color: #fff;
@@ -101,7 +95,6 @@ const styles = `
   }
   .btn-main:hover { transform: scale(1.05) translateY(-2px); }
 
-  /* --- INPUTS --- */
   .input-box {
     width: 100%;
     background: #111;
